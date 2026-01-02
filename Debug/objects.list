@@ -1,0 +1,7 @@
+"./Src/gpio.o"
+"./Src/main.o"
+"./Src/spi.o"
+"./Src/syscalls.o"
+"./Src/sysmem.o"
+"./Src/systick.o"
+"./Startup/startup_stm32f411retx.o"

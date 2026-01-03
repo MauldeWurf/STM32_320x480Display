@@ -32,9 +32,15 @@ int main(void){
 	}
 	sbc_lcd01_init();
 	testScreen();
-
+	uint8_t n;
 	while(1){
-		fullScreenColor(1);
+		 n++;
+		 n=n%3;
+		fullScreenColor(n);
+		systick_msec_delay(500);
+		//testScreen();
+		systick_msec_delay(500);
+
 	}
 
 }

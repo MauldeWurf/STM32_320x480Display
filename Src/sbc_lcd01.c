@@ -12,13 +12,28 @@
 #include <math.h>
          //    10 ms delay
 
-uint8_t white[2] = { 0xFF, 0xFF };
-uint8_t blue[2]  = { 0x00, 0x1F };
-uint8_t black[2]  = { 0x00, 0x00 };
-uint8_t red[2]      = {  0xF8, 0x00} ;
-uint8_t orange[2] =  {0xFF, 0xAA};
 
 
+Color16 white = {0xFF,0xFF};
+Color16 green = {0x00,0x1F};
+Color16 black = {0x00,0x00};
+Color16 blue  = {17,0} ;
+Color16 lightblue = {0xFF,0xAA};
+Color16 red = {0,248};
+
+Color16 colorScheme(uint8_t num){
+	switch(num){
+		case 0:
+			return white;
+		case 1:
+			return blue;
+		case 2:
+			return red;
+
+		default:
+			return black;
+	}
+}
 
 void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
@@ -78,9 +93,10 @@ void tft_dc_high(void){
 }
 
 void sbc_lcd01_init(){
+		//reset pin aus und wieder an
 		A0_init();
 		A0_off();
-		systick_msec_delay(50);
+		systick_msec_delay(50); //50ms ist geraten, aber funktioniert
 		A0_on();
 
 		systick_msec_delay(5);
@@ -91,11 +107,29 @@ void sbc_lcd01_init(){
 		displayInit(generic_st7789);
 	}
 
-void fullScreenColor(uint8_t color){
+void fullScreenColor(uint8_t enumCol){
 	sendCommand(ST77XX_RAMWR, NULL, 0);
+			uint8_t buf[2];
 			tft_dc_high();
+			switch(enumCol){
+			case 0:
+				buf[0] =  white.low;
+				buf[1] =  white.hi;
+				break;
+			case 1:
+				buf[0] =  red.low;
+				buf[1] =  red.hi;
+				break;
+			case 2:
+				buf[0] =  blue.low;
+				buf[1] =  blue.hi;
+				break;
+			default:
+			//	uint8_t buf[2] =  {black.low,black.hi};
+			}
+
 			for (uint32_t i=0; i<240*320; i++){
-					spi1_transmit(white,2);
+					spi1_transmit(buf,2);
 				}
 			tft_dc_low();
 }
@@ -106,27 +140,37 @@ void testScreen(void){
 	sendCommand(ST77XX_RAMWR, NULL, 0);
 
 			tft_dc_high();
+			uint8_t pixel_color[2] = {white.low,white.hi};
 			for (uint32_t i=0; i<240*320; i++){
 				int j=floor(i/(40*240));
 				switch(j){
 				case 0:
-					spi1_transmit(white,2);
+					pixel_color[0] = white.low;
+					pixel_color[1] = white.hi;
 					break;
 				case 1:
-					spi1_transmit(blue,2);
+					pixel_color[0] = green.low;
+					pixel_color[1] = green.hi;
 					break;
 				case 2:
-					spi1_transmit(red,2);
+					pixel_color[0] = black.low;
+					pixel_color[1] = black.hi;;
 					break;
+
 				case 3:
-					spi1_transmit(black,2);
+					pixel_color[0] = blue.low;
+					pixel_color[1] = blue.hi;
 					break;
 				case 4:
-					spi1_transmit(orange,2);
+					pixel_color[0] = lightblue.low;
+					pixel_color[1] = lightblue.hi;
 					break;
-				default:
-					spi1_transmit(white,2);
+				case 5:
+					pixel_color[0] = red.low;
+					pixel_color[1] = red.hi;
+					break;
 				}
+				spi1_transmit(pixel_color,2);
 			}
 
 			tft_dc_low();

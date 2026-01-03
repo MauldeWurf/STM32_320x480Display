@@ -1,16 +1,6 @@
 #include "spi.h"
 
 
-
-#define SPI1EN			(1U<<12)
-#define GPIOAEN			(1U<<0)
-
-#define SR_TXE			(1U<<1)
-#define SR_RXNE			(1U<<0)
-
-#define SR_BSY			(1U<<7)
-
-
 //PA5 -> CLK
 //PA6 -> MISO
 //PA7 -> MOSI
@@ -168,24 +158,4 @@ void spi1_receive(uint8_t *data,uint32_t size)
 		*data++ = (SPI1->DR);
 		size--;
 	}
-}
-
-
-void cs_enable(void)
-{
-	GPIOA->ODR &=~(1U<<11);
-
-}
-
-/*Pull high to disable*/
-void cs_disable(void)
-{
-	GPIOA->ODR |=(1U<<11);
-}
-
-void tft_dc_low(void){
-	GPIOA->ODR &=~(1U<<9);//???
-}
-void tft_dc_high(void){
-	GPIOA->ODR |=(1U<<9);//???
 }

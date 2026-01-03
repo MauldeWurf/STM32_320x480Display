@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Src/gpio.c \
 ../Src/main.c \
+../Src/sbc_lcd01.c \
 ../Src/spi.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c \
@@ -15,6 +16,7 @@ C_SRCS += \
 OBJS += \
 ./Src/gpio.o \
 ./Src/main.o \
+./Src/sbc_lcd01.o \
 ./Src/spi.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o \
@@ -23,6 +25,7 @@ OBJS += \
 C_DEPS += \
 ./Src/gpio.d \
 ./Src/main.d \
+./Src/sbc_lcd01.d \
 ./Src/spi.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d \
@@ -36,7 +39,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/systick.cyclo ./Src/systick.d ./Src/systick.o ./Src/systick.su
+	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/sbc_lcd01.cyclo ./Src/sbc_lcd01.d ./Src/sbc_lcd01.o ./Src/sbc_lcd01.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/systick.cyclo ./Src/systick.d ./Src/systick.o ./Src/systick.su
 
 .PHONY: clean-Src
 

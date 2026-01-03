@@ -1,5 +1,6 @@
 "./Src/gpio.o"
 "./Src/main.o"
+"./Src/sbc_lcd01.o"
 "./Src/spi.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"

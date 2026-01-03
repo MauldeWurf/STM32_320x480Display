@@ -1,8 +1,4 @@
-../Src/spi.c:21:6:spi_gpio_init	4	static
-../Src/spi.c:87:6:spi1_config	4	static
-../Src/spi.c:132:6:spi1_transmit	24	static
-../Src/spi.c:157:6:spi1_receive	16	static
-../Src/spi.c:174:6:cs_enable	4	static
-../Src/spi.c:181:6:cs_disable	4	static
-../Src/spi.c:186:6:tft_dc_low	4	static
-../Src/spi.c:189:6:tft_dc_high	4	static
+../Src/spi.c:11:6:spi_gpio_init	4	static
+../Src/spi.c:77:6:spi1_config	4	static
+../Src/spi.c:122:6:spi1_transmit	24	static
+../Src/spi.c:147:6:spi1_receive	16	static

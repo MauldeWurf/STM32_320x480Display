@@ -3,8 +3,17 @@
 #ifndef SPI_H_
 #define SPI_H_
 
+#define SPI1EN			(1U<<12)
+#define GPIOAEN			(1U<<0)
+
+#define SR_TXE			(1U<<1)
+#define SR_RXNE			(1U<<0)
+
+#define SR_BSY			(1U<<7)
+
 
 #include "stm32f4xx.h"
+#include "systick.h"
 #include <stdint.h>
 
 void spi_gpio_init(void);

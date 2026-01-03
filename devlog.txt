@@ -1,0 +1,1 @@
+02012026 testprojekt dupliziert und zum laufen gebracht. Nächster schritt: Teilen in gescheite Funktionen, in LCD.h aufteilen und main.c leeren, danach oder gleichzeitig adafruit grafikfunktionen übertragen

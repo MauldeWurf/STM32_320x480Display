@@ -30,6 +30,11 @@
 #define ST77XX_RAMWR 0x2C
 #define ST7789_DISPOFF 0x28
 
+#define DISPLAY_PIXEL (240*320)
+#define BUFFER_PIXEL 0xFF
+#define BUFFER_BYTES (BUFFER_PIXEL*2)
+#define DISPLAY_CHUNKS (DISPLAY_PIXEL /BUFFER_PIXEL)
+
 /*from adafruit_ST7789.cpp*/
 static const uint8_t generic_st7789[] ={                // Init commands for 7789 screens
 	    9,                              //  9 commands in list:

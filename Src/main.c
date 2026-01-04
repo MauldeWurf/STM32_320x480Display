@@ -37,9 +37,9 @@ int main(void){
 		 n++;
 		 n=n%3;
 		fullScreenColor(n);
-		systick_msec_delay(500);
+		systick_msec_delay(100);
 		//testScreen();
-		systick_msec_delay(500);
+		systick_msec_delay(100);
 
 	}
 

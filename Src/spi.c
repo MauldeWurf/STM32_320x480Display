@@ -144,6 +144,15 @@ void spi1_transmit(uint8_t *data,uint32_t size)
 	temp = SPI1->SR;
 }
 
+void spi1_transmit_opti(uint8_t *data,uint32_t size){
+	uint32_t i=0;
+	uint8_t temp;
+	while(i<size){
+		i++;
+	}
+}
+
+
 void spi1_receive(uint8_t *data,uint32_t size)
 {
 	while(size)

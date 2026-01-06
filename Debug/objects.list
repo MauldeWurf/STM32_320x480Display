@@ -2,6 +2,7 @@
 "./Src/main.o"
 "./Src/sbc_lcd01.o"
 "./Src/spi.o"
+"./Src/spi_dma.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Src/systick.o"

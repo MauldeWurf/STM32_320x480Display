@@ -31,14 +31,16 @@
 #define ST7789_DISPOFF 0x28
 
 #define DISPLAY_PIXEL (240*320)
-#define BUFFER_PIXEL 240
-#define BUFFER_BYTES (BUFFER_PIXEL*2)
+#define BUFFER_PIXEL 240 //for 16 bit color_transfer
+#define BUFFER_BYTES (BUFFER_PIXEL*2) //for 8 bit color transfer, should be removed evetually
 #define DISPLAY_CHUNKS (DISPLAY_PIXEL /BUFFER_PIXEL)
 
 #define COLOR16_WHITE 0xFFFF
 #define COLOR16_BLACK 0x0000
 #define COLOR16_RED 0xF800
 #define COLOR16_BLUE 0x00FD
+#define COLOR16_GREEN 0x1F00
+#define COLOR16_LIGHTBLUE 0xAAFF
 
 
 /*from adafruit_ST7789.cpp*/
@@ -86,3 +88,4 @@ void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
 void sbc_lcd01_init();
 void fullScreenColor(uint8_t enumCol);
 void testScreen(void);
+void testScreen_16(void);

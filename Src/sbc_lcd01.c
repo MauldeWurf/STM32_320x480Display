@@ -12,7 +12,7 @@
 #include <math.h>
          //    10 ms delay
 
-static uint16_t buf[BUFFER_BYTES];
+static uint16_t lineBuffer[BUFFER_BYTES];
 
 Color16 white = {0xFF,0xFF};
 Color16 green = {0x00,0x1F};
@@ -113,30 +113,29 @@ void fullScreenColor(uint8_t enumCol){
 			for(uint32_t i=0;i<BUFFER_PIXEL;i+=1) {
 			switch(enumCol){
 			case 0:
-				buf[i] =  COLOR16_WHITE;
-				//buf[i+1] =  white.hi;
+				lineBuffer[i] =  COLOR16_WHITE;
 				break;
 			case 1:
-				buf[i] =  COLOR16_BLACK;
-				//buf[i+1] =  red.hi;
+				lineBuffer[i] =  COLOR16_BLACK;
 				break;
 			case 2:
-				buf[i] =  COLOR16_RED;
-				//buf[i+1] =  blue.hi;
+				lineBuffer[i] =  COLOR16_RED;
 				break;
 			default:
-			//	uint8_t buf[2] =  {black.low,black.hi};
+				break;
 			}}
 			for (uint32_t i=0; i<DISPLAY_CHUNKS; i++){
 					//spi1_transmit(buf,BUFFER_BYTES);
-				spi1_transmit_16(buf,BUFFER_PIXEL);
+				spi1_transmit_16(lineBuffer,BUFFER_PIXEL);
 				}
 			tft_dc_low();
 }
 
 void testScreen(void){
+	//set CASET and RASET again, not nescessary but could help debuging
 	sendCommand(ST77XX_CASET, (uint8_t[]){0,0,0,240}, 4);
 	sendCommand(ST77XX_RASET, (uint8_t[]){0,0,1,63}, 4);
+
 	sendCommand(ST77XX_RAMWR, NULL, 0);
 
 			tft_dc_high();
@@ -173,5 +172,42 @@ void testScreen(void){
 				spi1_transmit(pixel_color,2);
 			}
 
+			tft_dc_low();
+}
+void testScreen_16(void){
+	//set CASET and RASET again, not nescessary but could help debuging
+	sendCommand(ST77XX_CASET, (uint8_t[]){0,0,0,240}, 4);
+	sendCommand(ST77XX_RASET, (uint8_t[]){0,0,1,63}, 4);
+
+	sendCommand(ST77XX_RAMWR, NULL, 0);
+
+			tft_dc_high();
+
+			for	(uint16_t j=0;j < DISPLAY_CHUNKS;j++){
+				uint8_t line= floor(j/40);
+				for (uint32_t i=0; i<BUFFER_PIXEL; i++){
+					switch(line){
+					case 0:
+						lineBuffer[i] = COLOR16_WHITE;
+						break;
+					case 1:
+						lineBuffer[i] = COLOR16_GREEN;
+						break;
+					case 2:
+						lineBuffer[i] = COLOR16_BLACK;
+						break;
+					case 3:
+						lineBuffer[i] = COLOR16_BLUE;
+						break;
+					case 4:
+						lineBuffer[i] = COLOR16_LIGHTBLUE;
+						break;
+					case 5:
+						lineBuffer[i] = COLOR16_RED;
+						break;
+				}
+			}
+				spi1_transmit_16(lineBuffer,BUFFER_PIXEL);
+			}
 			tft_dc_low();
 }

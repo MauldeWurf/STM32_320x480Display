@@ -31,13 +31,16 @@ int main(void){
 	GPIOA->MODER &=~(1U<<13);
 	}
 	sbc_lcd01_init();
-	testScreen();
-	uint8_t n;
+	testScreen_16();
+	uint8_t n =0;
 	while(1){
 		fullScreenColor(n);
 		n++;
 		n=n%3;
+		fullScreenColor(n);
 		systick_msec_delay(1000);
+		testScreen_16();
+		fullScreenColor(n);
 
 	}
 

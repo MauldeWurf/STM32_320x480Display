@@ -55,22 +55,6 @@ void spi_gpio_init(void)
 	GPIOA->AFR[0] |=(1U<<30);
 	GPIOA->AFR[0] &= ~(1U<<31);
 
-	/*GPIOA auf highspeed
-	GPIOA->OSPEEDR |=(1U<<21);
-	GPIOA->OSPEEDR |=(1U<<20);
-	GPIOA->OSPEEDR |=(1U<<19);
-	GPIOA->OSPEEDR |=(1U<<18);
-	GPIOA->OSPEEDR |=(1U<<17);
-	GPIOA->OSPEEDR |=(1U<<16);
-	GPIOA->OSPEEDR |=(1U<<15);
-	GPIOA->OSPEEDR |=(1U<<14);
-	GPIOA->OSPEEDR |=(1U<<13);
-	GPIOA->OSPEEDR |=(1U<<12);
-	GPIOA->OSPEEDR |=(1U<<11);
-	GPIOA->OSPEEDR |=(1U<<10);
-	GPIOA->OSPEEDR |=(1U<<9);
-	GPIOA->OSPEEDR |=(1U<<8);*/
-
 
 }
 
@@ -112,14 +96,13 @@ void spi1_config(void)
 	 * setting SSM=1 and SSI=1*/
 	SPI1->CR1 |= (1<<8);
 	SPI1->CR1 |= (1<<9);
-	//SPI1->CR1 &=~ (1<<9);
-	//SPI1->CR1 &=~ (1<<8);
 	/*Enable SPI module*/
 	SPI1->CR1 |= (1<<6);
 }
 
 void spi1_transmit(uint8_t *data,uint32_t size)
 {
+	/*8 bit version for init only*/
 	uint32_t i=0;
 	uint8_t temp;
 
@@ -143,13 +126,12 @@ void spi1_transmit(uint8_t *data,uint32_t size)
 	temp = SPI1->SR;
 }
 
-void spi1_transmit_16(uint16_t *data,uint32_t size)
+void spi1_transmit16(uint16_t *data,uint32_t size)
 	{
-		/*Set 16 bit data mode*/
-		SPI1->CR1 |=  (1U<<11);
-
+		/*16 bit version*/
 		uint32_t i=0;
-		uint16_t temp;
+
+		uint8_t temp;
 
 		while(i<size)
 		{
@@ -169,8 +151,7 @@ void spi1_transmit_16(uint16_t *data,uint32_t size)
 		/*Clear OVR flag*/
 		temp = SPI1->DR;
 		temp = SPI1->SR;
-	/*Set 8 bit data mode*/
-	//SPI1->CR1 &= ~(1U<<11);
+
 	}
 
 
@@ -194,4 +175,7 @@ void spi1_DMA_enable(void){
 	SPI1->CR1 |= (1U << 6);
 	SPI1->CR2 |= (1U<<1);
 }
-
+void spi1_set16(void){
+/*Set 16 bit data mode*/
+SPI1->CR1 |=  (1U<<11);
+}

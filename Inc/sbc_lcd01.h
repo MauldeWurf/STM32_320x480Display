@@ -87,10 +87,10 @@ void cs_disable(void);
 void tft_dc_low(void);
 void tft_dc_high(void);
 void displayInit(const uint8_t *addr);
+void displayReset(void);
 void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes);
 void sbc_lcd01_init();
-void fullScreenColor(uint8_t enumCol);
-void testScreen(void);
+void fullScreenColor(uint16_t color);
 void testScreen_16(void);
 #endif /* SBC_LCD01_H_ */

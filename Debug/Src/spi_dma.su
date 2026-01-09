@@ -1,3 +1,2 @@
-../Src/spi_dma.c:23:6:spi_dma_init	24	static
-../Src/spi_dma.c:90:6:spi_dma_test	4	static
-../Src/spi_dma.c:97:6:spi1_transmit_DMA	16	static
+../Src/spi_dma.c:22:6:spi_dma_init	16	static
+../Src/spi_dma.c:79:6:spi1_transmit_DMA	16	static

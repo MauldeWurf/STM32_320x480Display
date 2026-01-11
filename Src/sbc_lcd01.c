@@ -6,6 +6,7 @@
  */
 #include "spi.h"
 #include "sbc_lcd01.h"
+#include "exti.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -47,17 +48,18 @@ void sendCommand16(uint16_t commandByte, const uint16_t *dataBytes,
 void sbc_lcd01_init(){
 		uint8_t init_delay = 5;
 		displayReset();
-		systick_msec_delay(init_delay);
+		systick_msec_sleep(init_delay);
 		spi_gpio_init();
-		systick_msec_delay(init_delay);
+		systick_msec_sleep(init_delay);
 		spi1_config();
-		systick_msec_delay(init_delay);
+		systick_msec_sleep(init_delay);
 		spi_dma_init(lineBuffer);
-		systick_msec_delay(init_delay);
+		systick_msec_sleep(init_delay);
 		displayInit(generic_st7789);
-		systick_msec_delay(init_delay);
+		systick_msec_sleep(init_delay);
 		spi1_set16();
-
+		systick_msec_sleep(init_delay);
+		exti_init();
 	}
 
 void displayInit(const uint8_t *addr) {

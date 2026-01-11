@@ -91,7 +91,8 @@ void spi1_transmit_DMA(uint32_t size)
 	    DMA2_Stream3->NDTR = size;
 	    /* Enable stream */
 	    DMA2_Stream3->CR |= DMA_SCR_EN;
-	    while(!(DMA2->LISR & (1U<<27))){}
-
-
+	    //while(!(DMA2->LISR & (1U<<27))){}
+	    while(DMA2_Stream3->CR & DMA_SCR_EN == 1){
+	    __WFI(); //ok much better, but what if another interupt is triggered?
+	    }
 	}

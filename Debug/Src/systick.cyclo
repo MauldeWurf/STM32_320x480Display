@@ -1,1 +1,4 @@
-../Src/systick.c:16:6:systick_msec_delay	3
+../Src/systick.c:19:6:systick_msec_delay	3
+../Src/systick.c:45:6:systick_init	1
+../Src/systick.c:66:6:systick_msec_sleep	2
+../Src/systick.c:91:6:SysTick_Handler	1

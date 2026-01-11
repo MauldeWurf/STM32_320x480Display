@@ -1,1 +1,4 @@
-../Src/systick.c:16:6:systick_msec_delay	24	static
+../Src/systick.c:19:6:systick_msec_delay	24	static
+../Src/systick.c:45:6:systick_init	4	static,ignoring_inline_asm
+../Src/systick.c:66:6:systick_msec_sleep	16	static,ignoring_inline_asm
+../Src/systick.c:91:6:SysTick_Handler	4	static

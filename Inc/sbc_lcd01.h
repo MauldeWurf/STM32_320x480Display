@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <math.h>
 #include "systick.h"
+#include "exti.h"
 
 #ifndef SBC_LCD01_H_
 #define SBC_LCD01_H_

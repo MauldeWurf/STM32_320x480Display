@@ -28,7 +28,6 @@ void spi_gpio_init(void)
 	GPIOA->MODER |=(1U<<15);
 
 
-	/*Set PA9 as output pin*/
 	GPIOA->MODER |=(1U<<18);
 	GPIOA->MODER &=~(1U<<19);
 
@@ -124,6 +123,8 @@ void spi1_transmit(uint8_t *data,uint32_t size)
 	/*Clear OVR flag*/
 	temp = SPI1->DR;
 	temp = SPI1->SR;
+	/*use temp variable to clear warning list*/
+	if(temp!=0) temp=0;
 }
 
 void spi1_transmit16(uint16_t *data,uint32_t size)
@@ -151,7 +152,8 @@ void spi1_transmit16(uint16_t *data,uint32_t size)
 		/*Clear OVR flag*/
 		temp = SPI1->DR;
 		temp = SPI1->SR;
-
+		/*use temp variable to clear warning list*/
+		if(temp!=0) temp=0;
 	}
 
 
@@ -178,4 +180,9 @@ void spi1_DMA_enable(void){
 void spi1_set16(void){
 /*Set 16 bit data mode*/
 SPI1->CR1 |=  (1U<<11);
+}
+
+void spi1_set8(void){
+/*Set 16 bit data mode*/
+SPI1->CR1 &=~  (1U<<11);
 }

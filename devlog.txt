@@ -1,3 +1,10 @@
 02012026 testprojekt dupliziert und zum laufen gebracht. Nächster schritt: Teilen in gescheite Funktionen, in LCD.h aufteilen und main.c leeren, danach oder gleichzeitig adafruit_GFX grafikfunktionen übertragen
 
-06012026 angefangen mit DMA, Schrittweise Implementierung in neuem Branch
+06012026 angefangen mit DMA, Schrittweise Implementierung in neuem Branch#
+
+13012026 DMA und IRQ implementiert und zurück in master branch. Nächstes Projekt ist eine Grafik library - einfachste Funktion, Rechteck implementiert, rechteckiges adress window. windowBuffer ersetzt line Buffer. window > line.  der window Buffer wird nicht komplett geschrieben sondern nur der Teil der durch 'size' vorgegeben wird. 
+Offene Fragen:
+- Aufteilung in myGFX  und sbc_lcd01 Funktionen? Sinnvoll? Wenn ja wie?
+- vielleicht 2D Array für bessere Lesbarkeit? 
+Offene Aufgaben:
+- Kreis, Letter, Pixel, offenes Rechteck, movement? (spannend, aber nicht soo notwendig)

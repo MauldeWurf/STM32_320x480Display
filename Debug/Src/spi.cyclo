@@ -1,7 +1,8 @@
 ../Src/spi.c:11:6:spi_gpio_init	1
-../Src/spi.c:61:6:spi1_config	1
-../Src/spi.c:103:6:spi1_transmit	5
-../Src/spi.c:129:6:spi1_transmit16	5
-../Src/spi.c:158:6:spi1_receive	3
-../Src/spi.c:174:6:spi1_DMA_enable	1
-../Src/spi.c:178:6:spi1_set16	1
+../Src/spi.c:60:6:spi1_config	1
+../Src/spi.c:102:6:spi1_transmit	6
+../Src/spi.c:130:6:spi1_transmit16	6
+../Src/spi.c:160:6:spi1_receive	3
+../Src/spi.c:176:6:spi1_DMA_enable	1
+../Src/spi.c:180:6:spi1_set16	1
+../Src/spi.c:185:6:spi1_set8	1

@@ -17,9 +17,11 @@ static uint16_t lineBuffer[DISPLAY_LINE_PIXEL];
 
 
 
+
 void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
 	/*8 bit method, not working in 16 bit mode*/
+	spi1_set8();
 	cs_enable();
 	tft_dc_low();
 	spi1_transmit(&commandByte,1); // Send the command byte
@@ -28,6 +30,7 @@ void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
 		spi1_transmit(dataBytes,numDataBytes);
 	}
 	cs_disable();
+	spi1_set16();
 
 }
 
@@ -53,7 +56,7 @@ void sbc_lcd01_init(){
 		systick_msec_sleep(init_delay);
 		spi1_config();
 		systick_msec_sleep(init_delay);
-		spi_dma_init(lineBuffer);
+		spi_dma_init(windowBuffer);
 		systick_msec_sleep(init_delay);
 		displayInit(generic_st7789);
 		systick_msec_sleep(init_delay);
@@ -87,11 +90,12 @@ void displayInit(const uint8_t *addr) {
 }
 
 void fullScreenColor(uint16_t color){
+			initAdressWindow(0,0,DISPLAY_LINE_PIXEL,DISPLAY_LINE_NUMBER);
 			sendCommand16((uint16_t)ST77XX_RAMWR, NULL, 0);
 			tft_dc_high();
 			for(uint32_t pixel=0;pixel<DISPLAY_LINE_PIXEL;pixel+=1) {
-			//fill lineBuffer with color values
-			lineBuffer[pixel] =  color;
+			//fill windowBuffer with color values
+			windowBuffer[pixel] =  color;
 			}
 			for (uint32_t line=0; line<DISPLAY_LINE_NUMBER; line++){
 				spi1_transmit_DMA(DISPLAY_LINE_PIXEL);
@@ -99,6 +103,27 @@ void fullScreenColor(uint16_t color){
 			tft_dc_low();
 }
 
+void fillRectangle(uint16_t *buffer, uint16_t size){
+	//void spi_dma_init(windowBuffer);
+	for (uint16_t i=0; i < size ;i++){
+		windowBuffer[i]=buffer[i];
+	}
+	sendCommand16((uint16_t)ST77XX_RAMWR, NULL, 0);
+			tft_dc_high();
+			spi1_transmit_DMA(size);
+
+			tft_dc_low();
+}
+
+void initAdressWindow(uint16_t x, uint16_t y, uint16_t width, uint16_t height){
+
+	uint8_t caset_data[4] =  {0 ,x,0,x+width-1};
+	uint8_t raset_data[4] =  {0 ,y,0,y+height-1};
+	sendCommand((uint8_t)ST77XX_CASET,caset_data, 4);
+	sendCommand((uint8_t)ST77XX_RASET, raset_data, 4);
+	sendCommand((uint8_t)ST77XX_RAMWR, NULL, 0);
+
+}
 
 void testScreen_16(void){
 

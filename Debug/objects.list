@@ -1,6 +1,7 @@
 "./Src/exti.o"
 "./Src/gpio.o"
 "./Src/main.o"
+"./Src/myGFX.o"
 "./Src/sbc_lcd01.o"
 "./Src/spi.o"
 "./Src/spi_dma.o"

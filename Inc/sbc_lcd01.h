@@ -38,7 +38,7 @@
 #define DISPLAY_LINE_NUMBER 241
 #define DISPLAY_PIXEL (DISPLAY_LINE_PIXEL * DISPLAY_LINE_NUMBER)
 #define BUFFER_BYTES (DISPLAY_LINE_PIXEL*2) //for 8 bit color transfer, should be removed evetually
-
+#define MAX_WINDOW_PIXEL (DISPLAY_LINE_PIXEL*16)
 
 #define COLOR16_WHITE 0xFFFF
 #define COLOR16_BLACK 0x0000
@@ -47,6 +47,7 @@
 #define COLOR16_GREEN 0x1F00
 #define COLOR16_LIGHTBLUE 0xAAFF
 
+static volatile uint16_t windowBuffer[MAX_WINDOW_PIXEL]; // define windowBuffer for
 
 /*from adafruit_ST7789.cpp*/
 static const uint8_t generic_st7789[] ={                // Init commands for 7789 screens
@@ -69,7 +70,7 @@ static const uint8_t generic_st7789[] ={                // Init commands for 778
 	      0x00,
 	      0,             //     YSTART = 0
 	      239>>8,
-	      239&0xFF,  //     YEND = 320
+	      239&0xFF,  //     YEND =239
 	    ST77XX_INVON  ,   ST_CMD_DELAY,  //  7: hack
 	      10,
 	    ST77XX_NORON  ,   ST_CMD_DELAY, //  8: Normal display on, no args, w/delay

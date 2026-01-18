@@ -71,17 +71,19 @@ void writeLetter(char letter, uint16_t x, uint16_t y,uint16_t color,uint16_t bac
 	uint8_t letterWidth = 8;
 	initAdressWindow(x, y, letterHeight, letterWidth);
     for (int8_t i = 31 ;i>=0;i--){
-    localBuffer[i] = (uint16_t)(g->rows[1]>>i & 0x00000001) *color;
-    localBuffer[32+i] = (uint16_t)(g->rows[0]>>i & 0x00000001) *color;
-    if(!(g->rows[1]>>i & 0x00000001)) localBuffer[i]=background;
-    if(!(g->rows[0]>>i & 0x00000001)) localBuffer[32+i]=background;
+    	localBuffer[i] = (uint16_t)(g->rows[1]>>i & 0x00000001) *color;
+    	localBuffer[32+i] = (uint16_t)(g->rows[0]>>i & 0x00000001) *color;
+    	if(!(g->rows[1]>>i & 0x00000001)) localBuffer[i]=background;
+    	if(!(g->rows[0]>>i & 0x00000001)) localBuffer[32+i]=background;
     }
-	fillRectangle(localBuffer,64);
+	//fillRectangle(localBuffer,64);
+	initAdressWindow(x, y, letterHeight*2, letterWidth*2);
+    fillSquare_scaleup(localBuffer,8,2);
 }
 
 void writeWord(const char *word, uint16_t x, uint16_t y,uint16_t color,uint16_t background){
 		for(uint8_t i=0 ; word[i] !='\0'; i++){
-			writeLetter((char)word[i],x-(i*10),y,color,background);
+			writeLetter((char)word[i],x-(i*15),y,color,background);
 			if (i==MAXWORDLENGTH) break;
 		}
 }

@@ -78,11 +78,6 @@ static const uint8_t generic_st7789[] ={                // Init commands for 778
 	    ST77XX_DISPON ,   ST_CMD_DELAY, //  9: Main screen turn on, no args, delay
 	      10 };
 
-typedef struct {
-    uint8_t hi;
-    uint8_t low;
-} Color16;
-
 
 void cs_enable(void);
 void cs_disable(void);
@@ -95,4 +90,5 @@ void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
 void sbc_lcd01_init();
 void fullScreenColor(uint16_t color);
 void testScreen_16(void);
+void fillSquare_scaleup(uint16_t *buffer, uint16_t size, uint8_t scale);
 #endif /* SBC_LCD01_H_ */

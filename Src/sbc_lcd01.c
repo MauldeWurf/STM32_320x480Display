@@ -104,14 +104,30 @@ void fullScreenColor(uint16_t color){
 }
 
 void fillRectangle(uint16_t *buffer, uint16_t size){
-	//void spi_dma_init(windowBuffer);
 	for (uint16_t i=0; i < size ;i++){
 		windowBuffer[i]=buffer[i];
 	}
 	sendCommand16((uint16_t)ST77XX_RAMWR, NULL, 0);
 			tft_dc_high();
 			spi1_transmit_DMA(size);
+			tft_dc_low();
+}
 
+void fillSquare_scaleup(uint16_t *buffer, uint16_t a, uint8_t scale){
+	uint16_t size = a*a;
+	scale = 2; //this method does not work for scale !=2 ...
+	uint8_t k;
+	for (uint16_t i=0; i < size;i++){
+			windowBuffer[scale*i+k]=buffer[i];
+			windowBuffer[scale*i+k+1]=buffer[i];
+			windowBuffer[scale*i+k+scale*a]=buffer[i];
+			windowBuffer[scale*i+k+scale*a+1]=buffer[i];
+			if (i!=0 && i%a==0) k+=scale *a;
+			}
+
+	sendCommand16((uint16_t)ST77XX_RAMWR, NULL, 0);
+			tft_dc_high();
+			spi1_transmit_DMA(size*scale*scale);
 			tft_dc_low();
 }
 

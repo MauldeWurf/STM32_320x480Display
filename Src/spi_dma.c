@@ -96,3 +96,12 @@ void spi1_transmit_DMA(uint32_t size)
 	    __WFI(); //wait for interupt, if not right interrupt wait again
 	    }
 	}
+
+void spi_dma_setSingleColorBuffer(bool on){
+	 /* Disable stream */
+	DMA2_Stream3->CR &= ~DMA_SCR_EN;
+	while (DMA2_Stream3->CR & DMA_SCR_EN){};
+	/*Disable memory addr increment*/
+	if(on)	DMA2_Stream3->CR &=~DMA_SCR_MINC;
+	else DMA2_Stream3->CR |=DMA_SCR_MINC;
+}

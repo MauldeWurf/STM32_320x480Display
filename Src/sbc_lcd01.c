@@ -90,13 +90,12 @@ void displayInit(const uint8_t *addr) {
 }
 
 void fullScreenColor(uint16_t color){
+	setSingleColorBuffer(1);
 			initAdressWindow(0,0,DISPLAY_X_MAX,DISPLAY_Y_MAX);
 			sendCommand16((uint16_t)ST77XX_RAMWR, NULL, 0);
 			tft_dc_high();
-			for(uint32_t pixel=0;pixel<DISPLAY_X_MAX;pixel+=1) {
-			//fill windowBuffer with color values
-			windowBuffer[pixel] =  color;
-			}
+			//set first windowBuffer to color
+			windowBuffer[0] =  color;
 			for (uint32_t line=0; line<DISPLAY_Y_MAX; line++){
 				spi1_transmit_DMA(DISPLAY_X_MAX);
 				}
@@ -104,9 +103,10 @@ void fullScreenColor(uint16_t color){
 }
 
 void fillRectangle(uint16_t *buffer,int16_t x,int16_t y, uint8_t a, uint8_t b){
+	setSingleColorBuffer(0);
 	//crop logic
-	if(x<0) x=0;
-	if(y<0) y=0;
+//	if(x<0) x=0;
+//	if(y<0) y=0;
 
 	//calculate total size to transmit
 	uint16_t size = a*b;
@@ -123,7 +123,26 @@ void fillRectangle(uint16_t *buffer,int16_t x,int16_t y, uint8_t a, uint8_t b){
 			tft_dc_low();
 }
 
+void fillRectangle_oneColor(uint16_t *buffer,int16_t x,int16_t y, uint8_t a, uint8_t b){
+	setSingleColorBuffer(1);
+	//calculate total size to transmit
+	uint16_t size = a*b;
+	initAdressWindow(x, y, a, b);
+
+	//fill Buffer
+	windowBuffer[0]=buffer[0];
+
+	//sending Data via DMA
+
+	sendCommand16((uint16_t)ST77XX_RAMWR, NULL, 0);
+			tft_dc_high();
+			spi1_transmit_DMA(size);
+			tft_dc_low();
+	//spi_dma_init(windowBuffer);
+}
+
 void fillSquare_scaleup(uint16_t *buffer, uint16_t x, uint16_t y, uint16_t a){
+	setSingleColorBuffer(0);
 	uint16_t size = a*a;
 	const uint8_t scale = 2;
 	uint16_t k=0;
@@ -203,4 +222,17 @@ void tft_dc_low(void){
 }
 void tft_dc_high(void){
 	GPIOA->ODR |=(1U<<9);
+}
+
+void setSingleColorBuffer(bool singleColor){
+	if(singleColor == singleColorBuffer){
+		//do nothing if already in right state
+		return;
+	}
+	else{
+		//set DMA mode
+		spi_dma_setSingleColorBuffer(singleColor);
+		//update buffer
+		singleColorBuffer =singleColor;
+	}
 }

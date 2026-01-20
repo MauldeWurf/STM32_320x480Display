@@ -15,4 +15,5 @@
 
 void spi_dma_init(uint16_t *buffer);
 void spi1_transmit_DMA(uint32_t size);
+void spi_dma_setSingleColorBuffer(bool on);
 #endif /* SPI_DMA_H_ */

@@ -48,6 +48,7 @@
 
 static volatile uint16_t windowBuffer[DISPLAY_X_MAX<<1]; // define windowBuffer for
 static uint16_t lineBuffer[DISPLAY_X_MAX];
+static bool singleColorBuffer;
 
 /*from adafruit_ST7789.cpp*/
 static const uint8_t generic_st7789[] ={                // Init commands for 7789 screens

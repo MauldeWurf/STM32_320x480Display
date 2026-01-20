@@ -29,7 +29,6 @@ int main(void){
 		writeWord(oneWord,pos,160,COLOR16_GREEN);
 		systick_msec_sleep(5);
 		pos =(pos+1)%240;
-
 	}
 
 }

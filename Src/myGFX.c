@@ -72,10 +72,10 @@ void textInit(bool doubleSize, uint16_t color, uint16_t backgroundColor){
 
 void rectangle( uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color){
 	uint16_t pixelNo = width*height;
-	for (uint16_t i=0; i < pixelNo ;i++){
-		windowBuffer[i]=color;
-	}
-	fillRectangle(windowBuffer,x,y,width,height); //Das ist etwas inkonsequent, weil hier der windowBuffer aus der sbc_lcd01 direkt benutzt wird - aber effizent ist es
+	/*for (uint16_t i=0; i < pixelNo ;i++){*/
+		localBuffer[0]=color;
+	//}
+	fillRectangle_oneColor(localBuffer,x,y,width,height); //Das ist etwas inkonsequent, weil hier der windowBuffer aus der sbc_lcd01 direkt benutzt wird - aber effizent ist es
 
 
 }

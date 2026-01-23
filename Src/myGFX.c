@@ -65,6 +65,9 @@ static const Glyph font[] = {
 		['u'] = { .rows ={0x6C006C6C, 0x6C6C7C3C}},
 };
 
+// sine_table: 0..255 corresponds to sin(x)*255
+static const uint8_t sine_table[] = {0,4,8,13,17,22,26,31,35,39,44,48,53,57,61,66,70,74,78,83,87,91,95,99,103,107,111,115,119,123,127,131,135,138,142,146,149,153,156,160,163,167,170,173,177,180,183,186,189,192,195,198,200,203,206,208,211,213,216,218,220,223,225,227,229,231,232,234,236,238,239,241,242,243,245,246,247,248,249,250,251,251,252,253,253,254,254,254,254,254,255,};
+
 static textOptions TEXT_OPT ={1,COLOR16_BLACK,COLOR16_WHITE};
 
 void textInit(bool doubleSize, uint16_t color, uint16_t backgroundColor){
@@ -104,7 +107,6 @@ void writeLetter(char letter, uint16_t x, uint16_t y,uint16_t color,uint16_t bac
     			//background
     			if(!((g->rows[0]>>(i*8+j)) & 0x00000001)) localBuffer[4+i][j]=background;
     			if(!((g->rows[1]>>(i*8+j)) & 0x00000001)) localBuffer[i][j]=background;
-
     	}
     }
 	if (TEXT_OPT.doubleSized) fillSquare_scaleup(localBuffer,x,y,letterHeight);
@@ -129,5 +131,51 @@ void writeWord(const char *word, uint16_t x, uint16_t y,uint16_t color){
 
 			if (i==MAXWORDLENGTH) break;
 		}
+}
+
+int16_t sin_deg(int16_t x){
+	//NOTE: -720<x<720 is required outside undefined
+	// return values -255...+255
+	int8_t sign=1;
+	int16_t output=0;
+
+	//check for negative x, fold back to [0,90) with right sign
+	if (x<0) {
+		sign = -sign;
+		x =-x;
+	}
+	// accept 720° range,
+	if(x>=360) x= x-360;
+
+	//set output to correspondig value of sine_table
+	// sine_table: 0..255 corresponds to sin(x)*255
+	if (0 <= x && x <= 90) output = sine_table[x];
+	if (90 < x && x <= 180) output = sine_table[-x+180];
+	if (180 < x && x <= 270) output = -sine_table[x-180];
+	if (270 < x && x <= 360) output = -(sine_table[-x+360]);
+	return sign * output;
+}
+
+int16_t cos_deg(int16_t x){
+	//NOTE: -720<x<720 is required outside undefined
+	// return values -255...+255
+	// accept 720° range
+	if(x>=360) x= x-360;
+	//NOTE: -360<x<360 is required
+	return sin_deg(x-90);
+}
+
+void drawCircle(uint8_t x, uint8_t y, uint8_t d,uint8_t thickness , uint16_t color){
+	for (uint16_t deg=0;deg <= 360; deg+=5){
+		rectangle(x+sin_deg(deg)*d/255,y+cos_deg(deg)*d/255,thickness,thickness,color);
+	}
+	return;
+}
+
+void drawCircle_part(uint8_t x, uint8_t y, uint8_t d,uint8_t thickness ,int8_t phi_start ,int8_t phi_stop, uint16_t color){
+	for (int16_t deg=phi_start;deg <= phi_stop; deg+=5){
+		rectangle(x+sin_deg(deg)*d/255,y+cos_deg(deg)*d/255,thickness,thickness,color);
+	}
+	return;
 }
 

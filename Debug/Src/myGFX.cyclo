@@ -1,5 +1,9 @@
-../Src/myGFX.c:70:6:textInit	1
-../Src/myGFX.c:77:6:rectangle	1
-../Src/myGFX.c:82:6:rectangle_empty	1
-../Src/myGFX.c:93:6:writeLetter	6
-../Src/myGFX.c:114:6:writeWord	5
+../Src/myGFX.c:73:6:textInit	1
+../Src/myGFX.c:80:6:rectangle	1
+../Src/myGFX.c:85:6:rectangle_empty	1
+../Src/myGFX.c:96:6:writeLetter	6
+../Src/myGFX.c:116:6:writeWord	5
+../Src/myGFX.c:136:9:sin_deg	11
+../Src/myGFX.c:159:9:cos_deg	2
+../Src/myGFX.c:168:6:drawCircle	2
+../Src/myGFX.c:175:6:drawCircle_part	2

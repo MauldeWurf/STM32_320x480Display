@@ -16,7 +16,7 @@ int main(void){
 	testScreen_16();
 	systick_msec_delay(500);
 	fullScreenColor(COLOR16_WHITE);
-	static const char oneWord[]="HUHU DU !!! ";
+	static const char oneWord[]="HALLO JESSICA! ";
 	static const char secondWord[] = " LIEBE GRuSSE!";
 	//rectangle(100,10,10,10,COLOR16_RED);
 	int16_t pos=0;
@@ -30,18 +30,22 @@ int main(void){
 	uint16_t angled = 2;
 
 	fullScreenColor(COLOR16_WHITE);
-	/*for (uint16_t i=0;i<240;i+=1){
-		rectangle(i,90+((sin_deg(i*4))>>2),3,3,COLOR16_GREEN);
-			rectangle(i,90+((sin_deg(-i*4))>>2),3,3,COLOR16_LIGHTBLUE);
-			rectangle(i,90+((cos_deg(i*4))>>2),3,3,COLOR16_RED);
-		}*/
-	for (uint8_t d=5;d<30;d+=7)	drawCircle(150+d, 100, d,3 , COLOR16_RED);
-	for (uint8_t d=5;d<30;d+=7)	drawCircle(120-d, 100, d,3 , COLOR16_BLUE);
-	drawCircle(132,65,10,7,COLOR16_RED);
-	drawCircle_part(132, 40, 26, 7, 180, 359, COLOR16_BLUE);
+	for (uint16_t i=0;i<240;i+=1){
+		rectangle(i,90+((sin_deg(i*2))>>2),3,3,COLOR16_GREEN);
+		rectangle(i,90+((cos_deg(i*2))>>2),3,3,COLOR16_RED);
+			//rectangle(i,90+((sin_deg(-i*4))>>2),3,3,COLOR16_LIGHTBLUE);
+			//rectangle(i,90+((cos_deg(i*4))>>2),3,3,COLOR16_RED);
+		}
+	//smilie();
+	graphicsInit(COLOR16_BLUE,COLOR16_WHITE,5);
+	for (uint16_t phi=0;phi<=360;phi+=45){
+		drawLine(155,165,40,phi);
+	}
+	rectangle_empty(0,0,230,230,10,COLOR16_BLUE);
+	debugGrid();
 	while(1){
-		writeWord(oneWord,pos,160,COLOR16_GREEN);
-		rectangle_empty(0,0,230,230,10,COLOR16_BLUE);
+		//writeWord(oneWord,pos,160,COLOR16_GREEN);
+		__WFI();
 		systick_msec_sleep(5);
 
 		pos =(pos+1)%450;

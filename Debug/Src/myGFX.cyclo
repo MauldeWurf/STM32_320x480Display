@@ -10,5 +10,7 @@
 ../Src/myGFX.c:189:6:drawCircle	2
 ../Src/myGFX.c:196:6:drawCircle_part	2
 ../Src/myGFX.c:204:6:drawLine	2
-../Src/myGFX.c:210:6:smilie	3
-../Src/myGFX.c:219:6:debugGrid	5
+../Src/myGFX.c:210:6:drawUint16	5
+../Src/myGFX.c:243:6:drawNumber_LCD	18
+../Src/myGFX.c:309:6:debugSmilie	3
+../Src/myGFX.c:318:6:debugGrid	5

@@ -30,26 +30,27 @@ int main(void){
 	uint16_t angled = 2;
 
 	fullScreenColor(COLOR16_WHITE);
-	for (uint16_t i=0;i<240;i+=1){
-		rectangle(i,90+((sin_deg(i*2))>>2),3,3,COLOR16_GREEN);
-		rectangle(i,90+((cos_deg(i*2))>>2),3,3,COLOR16_RED);
+	/*for (uint16_t i=0;i<240;i+=1){
+		rectangle(i,105+((sin_deg(i*2))>>2),3,3,COLOR16_GREEN);
+		rectangle(i,105+((cos_deg(i*2))>>2),3,3,COLOR16_RED);
 			//rectangle(i,90+((sin_deg(-i*4))>>2),3,3,COLOR16_LIGHTBLUE);
 			//rectangle(i,90+((cos_deg(i*4))>>2),3,3,COLOR16_RED);
-		}
+		}*/
 	//smilie();
 	graphicsInit(COLOR16_BLUE,COLOR16_WHITE,5);
-	for (uint16_t phi=0;phi<=360;phi+=45){
+	/*for (uint16_t phi=0;phi<=360;phi+=45){
 		drawLine(155,165,40,phi);
-	}
+	}*/
 	rectangle_empty(0,0,230,230,10,COLOR16_BLUE);
 	debugGrid();
+	drawNumber_LCD('1',140,100);
+	drawNumber_LCD('2',70,100);
 	while(1){
-		//writeWord(oneWord,pos,160,COLOR16_GREEN);
+		//writeWord(oneWord,pos,15,COLOR16_GREEN);
 		__WFI();
-		systick_msec_sleep(5);
-
 		pos =(pos+1)%450;
-	}
+		//drawUint16(pos,100,100);
+		}
 
 }
 

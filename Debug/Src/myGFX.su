@@ -10,5 +10,7 @@
 ../Src/myGFX.c:189:6:drawCircle	40	static
 ../Src/myGFX.c:196:6:drawCircle_part	40	static
 ../Src/myGFX.c:204:6:drawLine	48	static
-../Src/myGFX.c:210:6:smilie	24	static
-../Src/myGFX.c:219:6:debugGrid	24	static
+../Src/myGFX.c:210:6:drawUint16	32	static
+../Src/myGFX.c:243:6:drawNumber_LCD	40	static
+../Src/myGFX.c:309:6:debugSmilie	24	static
+../Src/myGFX.c:318:6:debugGrid	24	static

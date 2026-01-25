@@ -207,7 +207,106 @@ void drawLine(uint8_t x, uint8_t y, uint8_t length, uint16_t phi){
 	}
 }
 
-void smilie(void){
+void drawUint16(uint16_t input, uint8_t x, uint8_t y)
+	{
+
+	    char buffer[6]={'0','0','0','0','0','0'};   // max "65535" + '\0'
+	    uint8_t i = 0;
+	    uint8_t max = 3;
+
+	    // Sonderfall 0
+	    if (input == 0) {
+	        buffer[0] = '0';
+	        buffer[1] = '\0';
+	        writeWord(buffer, x, y, TEXT_OPT.color);
+	        return;
+	    }
+
+	    // Zahl rückwärts zerlegen
+	    while (input > 0 && i < max) {
+	        buffer[i++] = '0' + (input % 10);
+	        input /= 10;
+	    }
+
+	    buffer[max] = '\0';
+
+	    // String umdrehen
+	    for (uint8_t j = 0; j < max / 2; j++) {
+	        char tmp = buffer[j];
+	        buffer[j] = buffer[max - 1 - j];
+	        buffer[max - 1 - j] = tmp;
+	    }
+
+	    writeWord(buffer, x, y, TEXT_OPT.color);
+	}
+
+void drawNumber_LCD(char num, uint8_t x, uint8_t y){
+	//draw screen numbers in digital clock style
+	 uint8_t thick = 8*2;
+	 uint8_t width = 35;
+	 uint8_t half_height = 45;
+	 uint8_t statusByte=0b11110111;
+
+	 switch (num){
+	 	case '0': statusByte = 0b00111111;break;
+	 	case '1': statusByte = 0b00000011;break;
+	 	case '2': statusByte = 0b01110110;break;
+	 	case '3': statusByte = 0b01100111;break;
+	 	case '4': statusByte = 0b01001011;break;
+	    case '5': statusByte = 0b01101101;break;
+	    case '6': statusByte = 0b01111101;break;
+	   	case '7': statusByte = 0b00000111;break;
+	   	case '8': statusByte = 0b01111111;break;
+	   	case '9': statusByte = 0b01101111;break;
+	 }
+	 //	 _
+	 // |_|
+	 // |_x
+	 // ----->
+	 if(statusByte & (1U << 0)) rectangle(x,y,thick,half_height,COLOR16_BLACK);
+	 //	 _
+	 // |_x
+	 // |_|
+	 // ----->
+	 if(statusByte & (1U << 1)) rectangle(x,y+half_height,thick,half_height,COLOR16_BLACK);
+	 //	 x
+	 // |_|
+	 // |_|
+	 //------>
+	 if(statusByte & (1U << 2) )rectangle(x,y+2*half_height-thick,width+thick,thick,COLOR16_BLACK);
+	 //	 _
+	 // x_|
+	 // |_|
+	 //------>
+	 if(statusByte & (1U << 3)) rectangle(x+width,y+half_height,thick,half_height,COLOR16_BLACK);
+
+	//	_
+	// |_|
+	// x_|
+	//----->
+	 if(statusByte & (1U << 4)) rectangle(x+width,y,thick,half_height+thick/2,COLOR16_BLACK);
+
+	 //	 _
+	 // |_|
+	 // |x|
+	 //------>
+	 if(statusByte & (1U << 5)) rectangle(x,y,width+thick,thick,COLOR16_BLACK);
+	 //	 _
+	 // |x|
+	 // |_|
+	 //----->
+	 if(statusByte & (1U << 6)) rectangle(x,y+half_height-thick/2,width+thick,thick,COLOR16_BLACK);
+
+	 graphicsInit( COLOR16_WHITE,COLOR16_BLACK, 5);
+/*	 drawLine(x,y,thick*2,135);
+	 drawLine(x+width+thick/2,y,thick*2,45);
+	 drawLine(x,y+half_height-thick/2,thick*2,135);
+	 drawLine(x+width+thick/2,y+half_height-thick/2,thick*2,45);*/
+	 //drawLine(x+width+6+thick,y,thick*1.4,45);
+	 return;
+}
+
+void debugSmilie(void){
 		graphicsInit(COLOR16_BLUE,COLOR16_WHITE,5);
 		for (uint8_t d=5;d<30;d+=17)	drawCircle(150+10, 100+d/2, d);
 		for (uint8_t d=5;d<30;d+=17)	drawCircle(120-10, 100+d/2, d);
@@ -225,4 +324,5 @@ void debugGrid(void){
 		}
 	writeLetter('O',0,0,COLOR16_RED,COLOR16_BLACK);
 	}
+
 

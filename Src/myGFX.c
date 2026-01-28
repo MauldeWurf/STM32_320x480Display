@@ -12,13 +12,26 @@ uint16_t localBuffer[8][8];
 uint16_t singleColor = 0xFFFFF;
 uint16_t* singleBuffer = &singleColor;
 
-const uint8_t MAXWORDLENGTH = 25;
 
-typedef struct {;
+typedef struct {
 	uint16_t color;
 	uint16_t bgColor;
 	uint8_t thickness;
 } graphicsOptions;
+
+typedef struct {
+	uint16_t color;
+	uint16_t bgColor;
+	uint16_t x;
+	uint16_t y;
+	uint8_t thickness;
+	uint8_t xOffset;
+	uint8_t height;
+	char digits_prev[MAXDIGIT];
+	char digits[MAXDIGIT];
+	uint8_t digitNo;
+
+} LCDOptions ;
 
 typedef struct {
 	bool doubleSized;
@@ -76,6 +89,7 @@ static const uint8_t sine_table[] = {0,4,8,13,17,22,26,31,35,39,44,48,53,57,61,6
 
 static textOptions TEXT_OPT ={1,COLOR16_BLACK,COLOR16_WHITE};
 static graphicsOptions GRAPH_OPT ={COLOR16_BLACK,COLOR16_WHITE};
+static LCDOptions LCD_OPT ={COLOR16_BLACK,COLOR16_WHITE,0,0,8,70,100,{'8','8','8','8','8'},{'8','8','8','8','8'}}; //depends on MAXDIGIT!
 
 void textInit(bool doubleSize, uint16_t color, uint16_t backgroundColor){
 	TEXT_OPT.doubleSized = doubleSize;
@@ -88,6 +102,34 @@ void graphicsInit( uint16_t color, uint16_t backgroundColor, uint8_t thickness){
 	GRAPH_OPT.color = color;
 	GRAPH_OPT.bgColor = backgroundColor;
 	GRAPH_OPT.thickness = thickness;
+
+}
+
+void digitLCDInit(uint16_t x, uint16_t y, uint8_t xOffset, uint8_t height, uint8_t digitNo){
+	//initialize LCD display of digitNo numbers on screen, use graphicsInit first to set basic parameters
+	LCD_OPT.color = GRAPH_OPT.color;
+	LCD_OPT.bgColor = GRAPH_OPT.bgColor;
+	LCD_OPT.x =x;
+	LCD_OPT.y =y;
+	LCD_OPT.thickness = GRAPH_OPT.thickness;
+	LCD_OPT.xOffset = xOffset;
+	LCD_OPT.digitNo = digitNo;
+	LCD_OPT.height = height;
+	//fill background
+	rectangle(x-5,y-4,digitNo*xOffset,height, LCD_OPT.bgColor); //offsets 5,4 müssen noch justiert werden
+	for (uint8_t i=0;i < digitNo;i++){
+		drawDigit_LCD(LCD_OPT.digits[i],x+i*LCD_OPT.xOffset,y);
+	}
+
+}
+
+void digitLCDUpdate(uint8_t* inputs){ //die inputs hätten auch in einer uint8_t platz
+	for(uint8_t i=0;i< LCD_OPT.digitNo;i++){
+		eraseDigit_LCD(LCD_OPT.digits[i],LCD_OPT.x+i*LCD_OPT.xOffset,LCD_OPT.y);
+		LCD_OPT.digits[i]= castInt8ToChar(inputs[i]);
+		drawDigit_LCD(LCD_OPT.digits[i],LCD_OPT.x+i*LCD_OPT.xOffset,LCD_OPT.y); //hier könnte man die vorhandene funktion nehmen um uint16 zu char zu machen
+		//letztendlich muss hier aber eine update funktion hin, die auch den vorwert berücksichtigt
+	}
 
 }
 
@@ -210,7 +252,7 @@ void drawLine(uint8_t x, uint8_t y, uint8_t length, uint16_t phi){
 void drawUint16(uint16_t input, uint8_t x, uint8_t y)
 	{
 
-	    char buffer[6]={'0','0','0','0','0','0'};   // max "65535" + '\0'
+	    char buffer[MAXDIGIT]={'0','0','0','0','0'};   // max "65535" + '\0'
 	    uint8_t i = 0;
 	    uint8_t max = 3;
 
@@ -240,7 +282,7 @@ void drawUint16(uint16_t input, uint8_t x, uint8_t y)
 	    writeWord(buffer, x, y, TEXT_OPT.color);
 	}
 
-void drawNumber_LCD(char num, uint8_t x, uint8_t y){
+void drawDigit_LCD(char num, uint8_t x, uint8_t y){
 	//draw screen numbers in digital clock style
 	 uint8_t thick = 8*2;
 	 uint8_t width = 35;
@@ -259,45 +301,46 @@ void drawNumber_LCD(char num, uint8_t x, uint8_t y){
 	   	case '8': statusByte = 0b01111111;break;
 	   	case '9': statusByte = 0b01101111;break;
 	 }
+
 	 //	 _
 	 // |_|
 	 // |_x
 	 // ----->
-	 if(statusByte & (1U << 0)) rectangle(x,y,thick,half_height,COLOR16_BLACK);
+	 if(statusByte & (1U << 0)) rectangle(x,y,thick,half_height,LCD_OPT.color);
 	 //	 _
 	 // |_x
 	 // |_|
 	 // ----->
-	 if(statusByte & (1U << 1)) rectangle(x,y+half_height,thick,half_height,COLOR16_BLACK);
+	 if(statusByte & (1U << 1)) rectangle(x,y+half_height,thick,half_height,LCD_OPT.color);
 	 //	 x
 	 // |_|
 	 // |_|
 	 //------>
-	 if(statusByte & (1U << 2) )rectangle(x,y+2*half_height-thick,width+thick,thick,COLOR16_BLACK);
+	 if(statusByte & (1U << 2) )rectangle(x,y+2*half_height-thick,width+thick,thick,LCD_OPT.color);
 	 //	 _
 	 // x_|
 	 // |_|
 	 //------>
-	 if(statusByte & (1U << 3)) rectangle(x+width,y+half_height,thick,half_height,COLOR16_BLACK);
+	 if(statusByte & (1U << 3)) rectangle(x+width,y+half_height,thick,half_height,LCD_OPT.color);
 
 	//	_
 	// |_|
 	// x_|
 	//----->
-	 if(statusByte & (1U << 4)) rectangle(x+width,y,thick,half_height+thick/2,COLOR16_BLACK);
+	 if(statusByte & (1U << 4)) rectangle(x+width,y,thick,half_height+thick/2,LCD_OPT.color);
 
 	 //	 _
 	 // |_|
 	 // |x|
 	 //------>
-	 if(statusByte & (1U << 5)) rectangle(x,y,width+thick,thick,COLOR16_BLACK);
+	 if(statusByte & (1U << 5)) rectangle(x,y,width+thick,thick,LCD_OPT.color);
 	 //	 _
 	 // |x|
 	 // |_|
 	 //----->
-	 if(statusByte & (1U << 6)) rectangle(x,y+half_height-thick/2,width+thick,thick,COLOR16_BLACK);
+	 if(statusByte & (1U << 6)) rectangle(x,y+half_height-thick/2,width+thick,thick,LCD_OPT.color);
 
-	 graphicsInit( COLOR16_WHITE,COLOR16_BLACK, 5);
+
 /*	 drawLine(x,y,thick*2,135);
 	 drawLine(x+width+thick/2,y,thick*2,45);
 	 drawLine(x,y+half_height-thick/2,thick*2,135);
@@ -306,7 +349,26 @@ void drawNumber_LCD(char num, uint8_t x, uint8_t y){
 	 return;
 }
 
+void eraseDigit_LCD(char num, uint8_t x, uint8_t y){
+	//erase number with background color
+	uint16_t color = LCD_OPT.color;
+	LCD_OPT.color = LCD_OPT.bgColor;
+	drawDigit_LCD(num, x, y);
+	LCD_OPT.color = color;
+	return;
+}
+
+char castInt8ToChar(uint8_t input){
+    char buffer='0';   // max "65535" + '\0'
+    buffer= '0' + (input % 10);
+    return buffer;
+
+}
+
+
+
 void debugSmilie(void){
+	//just a smilie using circles - see if it looks ok
 		graphicsInit(COLOR16_BLUE,COLOR16_WHITE,5);
 		for (uint8_t d=5;d<30;d+=17)	drawCircle(150+10, 100+d/2, d);
 		for (uint8_t d=5;d<30;d+=17)	drawCircle(120-10, 100+d/2, d);
@@ -316,6 +378,7 @@ void debugSmilie(void){
 }
 
 void debugGrid(void){
+	//draws a grid to simplify finding display locations. Big dots: 100 , small dots:10
 	for(uint8_t x=0;x <240; x+=10){
 		for(uint8_t y=0 ;y <240; y+=10){
 			if(x%100 ==0 || y%100 ==0 ) rectangle(x,y,5,5,COLOR16_BLACK);
@@ -325,4 +388,8 @@ void debugGrid(void){
 	writeLetter('O',0,0,COLOR16_RED,COLOR16_BLACK);
 	}
 
+void initNumber_LCD(uint8_t x, uint8_t y, uint8_t digitNum){
+
+
+}
 

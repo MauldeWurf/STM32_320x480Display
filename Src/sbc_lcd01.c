@@ -13,11 +13,6 @@
 #include <math.h>
          //    10 ms delay
 
-
-
-
-
-
 void sendCommand(uint8_t commandByte, const uint8_t *dataBytes,
                                   uint8_t numDataBytes) {
 	/*8 bit method, not working in 16 bit mode*/

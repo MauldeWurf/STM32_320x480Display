@@ -27,4 +27,5 @@ void cs_enable(void);
 void cs_disable(void);
 void spi1_set8(void);
 void spi1_set16(void);
+char castNumToChar(uint8_t input);
 #endif /* SPI_H_ */

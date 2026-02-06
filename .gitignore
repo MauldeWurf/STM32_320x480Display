@@ -1,0 +1,23 @@
+# ===== STM32CubeIDE =====
+.settings/
+.project
+.cproject
+
+# ===== Build output =====
+Debug/
+Release/
+
+# ===== Debug / IDE artifacts =====
+*.launch
+stm32.ctb
+.stm32.ctb*
+
+# ===== Editor / OS =====
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.bak
+
+# ===== Optional logs =====
+devlog.txt

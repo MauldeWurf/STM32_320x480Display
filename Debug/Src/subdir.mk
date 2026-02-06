@@ -14,7 +14,9 @@ C_SRCS += \
 ../Src/spi_dma.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c \
-../Src/systick.c 
+../Src/systick.c \
+../Src/uart.c \
+../Src/uart_dma.c 
 
 OBJS += \
 ./Src/exti.o \
@@ -26,7 +28,9 @@ OBJS += \
 ./Src/spi_dma.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o \
-./Src/systick.o 
+./Src/systick.o \
+./Src/uart.o \
+./Src/uart_dma.o 
 
 C_DEPS += \
 ./Src/exti.d \
@@ -38,7 +42,9 @@ C_DEPS += \
 ./Src/spi_dma.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d \
-./Src/systick.d 
+./Src/systick.d \
+./Src/uart.d \
+./Src/uart_dma.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -48,7 +54,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/exti.cyclo ./Src/exti.d ./Src/exti.o ./Src/exti.su ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/myGFX.cyclo ./Src/myGFX.d ./Src/myGFX.o ./Src/myGFX.su ./Src/sbc_lcd01.cyclo ./Src/sbc_lcd01.d ./Src/sbc_lcd01.o ./Src/sbc_lcd01.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/spi_dma.cyclo ./Src/spi_dma.d ./Src/spi_dma.o ./Src/spi_dma.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/systick.cyclo ./Src/systick.d ./Src/systick.o ./Src/systick.su
+	-$(RM) ./Src/exti.cyclo ./Src/exti.d ./Src/exti.o ./Src/exti.su ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/myGFX.cyclo ./Src/myGFX.d ./Src/myGFX.o ./Src/myGFX.su ./Src/sbc_lcd01.cyclo ./Src/sbc_lcd01.d ./Src/sbc_lcd01.o ./Src/sbc_lcd01.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/spi_dma.cyclo ./Src/spi_dma.d ./Src/spi_dma.o ./Src/spi_dma.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/systick.cyclo ./Src/systick.d ./Src/systick.o ./Src/systick.su ./Src/uart.cyclo ./Src/uart.d ./Src/uart.o ./Src/uart.su ./Src/uart_dma.cyclo ./Src/uart_dma.d ./Src/uart_dma.o ./Src/uart_dma.su
 
 .PHONY: clean-Src
 

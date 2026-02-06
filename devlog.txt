@@ -11,4 +11,34 @@ Offene Aufgaben:
 
 15012026 Guter Fortschritt mit Buchstaben und Wörtern. Jetzt gibt es einen IDE fehler den ich nicht finde. Problem ließe sich in git lösen indem ich auf den vorherigen commit gehe und dann mit cherry-pick(?) nur die files committe die ich auch ändern wollte. Der fehler scheint irgendwie ins projekt gekommen zu sein und nicht im code zu liegen...keine Ahnung wie ich habe nichts im projekt geändert. Neustarts habe ich auch probiert
 
-21212026 Es gibt diverse hinweise, dass ich mit der Buffer Struktur noch nicht gut aufgestellt bin. So habe ich zum Beispiel logisch Probleme wenn ich die Buchstaben die über den Rand hinausgehen "durchschneiden will" da ich dann die Richtigen werde in 1D Buffer nicht leicht finde. Besser wäre hier ein 2D Buffer. Dazu kommt das Problem wenn ich z.B. ein Element über den Bildschirm bewegen will. Ich habe den Hintergrund dann nirgends in meiner CPU. entweder ich müsste ihn auslesen und temporär buffern, oder ich mache doch einen 2D windowBuffer der das ganze Display abbildet. Dann kann ich jeweils nur den upgedateten Bereich senden, aber die movement sache habe ich dann immernoch nicht gelöst....
+21012026 Es gibt diverse hinweise, dass ich mit der Buffer Struktur noch nicht gut aufgestellt bin. So habe ich zum Beispiel logisch Probleme wenn ich die Buchstaben die über den Rand hinausgehen "durchschneiden will" da ich dann die Richtigen werde in 1D Buffer nicht leicht finde. Besser wäre hier ein 2D Buffer. Dazu kommt das Problem wenn ich z.B. ein Element über den Bildschirm bewegen will. Ich habe den Hintergrund dann nirgends in meiner CPU. entweder ich müsste ihn auslesen und temporär buffern, oder ich mache doch einen 2D windowBuffer der das ganze Display abbildet. Dann kann ich jeweils nur den upgedateten Bereich senden, aber die movement sache habe ich dann immernoch nicht gelöst....
+
+05022026 ich fange jetzt mit der UART kommunikation an. Bin dabei auf das Problem gestoßen, dass USART2 auf den USB port zum PC gerouted ist. Die alternativen USART1 u. USART6 sind verfügbar, aber sie benutzen beide DMA2, den ich schon für mein SPI1 habe. Kollege GPT sagt, dass es schlecht wäre nur einen DMA controller zu nehmen und streams zur laufzeit zu wechseln, was ich auch sehr logisch finde. Daher muss ich wohl oder übel den SPI kanal für mein Display wechseln => neue Pins.
+
+SPI1 -> DMA2 //bisher benutzt
+SPI3 -> DMA1 oder SPI2 ->DMA1
+
+PIN mapping bisher: SPI1
+	PA5 - AF05 SPI_SCK
+	PA6 - AF05 SPI_MISO (not used)
+	PA7 - AF05 SPI_MOSI
+	PA9 - 		tft_dc
+	PA10 - 		display reset
+	PA11 -		cs_enable ...no effect
+DMA2_Stream3 Ch3
+	
+Neu: SPI3
+	SPI3 -lt GPT nur output?!
+	GPIOC anschalten
+	PC10 - AF06 SPI3_SCK 
+	PC11 - AF06	SPI_MISO (not needed)
+	PC12 - AF06 SPI3_MOSI
+
+DMA1 (Stream4 oder Stream7) Ch0
+
+USART1
+
+PA9 - AF07 USART1_TX
+PA10 - AF07 USART1_RX
+
+DMA2 Stream2 ch4  USART1_RX (tabelle 28. DMA request mapping- RM0383 Rev4)

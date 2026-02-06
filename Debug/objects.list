@@ -8,4 +8,6 @@
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Src/systick.o"
+"./Src/uart.o"
+"./Src/uart_dma.o"
 "./Startup/startup_stm32f411retx.o"

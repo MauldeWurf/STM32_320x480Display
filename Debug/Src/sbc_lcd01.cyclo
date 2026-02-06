@@ -10,8 +10,8 @@
 ../Src/sbc_lcd01.c:207:6:initAdressWindow	1
 ../Src/sbc_lcd01.c:231:6:testScreen_16	9
 ../Src/sbc_lcd01.c:265:6:displayReset	1
-../Src/sbc_lcd01.c:271:6:cs_enable	1
-../Src/sbc_lcd01.c:277:6:cs_disable	1
-../Src/sbc_lcd01.c:282:6:tft_dc_low	1
-../Src/sbc_lcd01.c:285:6:tft_dc_high	1
-../Src/sbc_lcd01.c:289:6:setSingleColorStatus	2
+../Src/sbc_lcd01.c:272:6:cs_enable	1
+../Src/sbc_lcd01.c:278:6:cs_disable	1
+../Src/sbc_lcd01.c:283:6:tft_dc_low	1
+../Src/sbc_lcd01.c:286:6:tft_dc_high	1
+../Src/sbc_lcd01.c:290:6:setSingleColorStatus	2

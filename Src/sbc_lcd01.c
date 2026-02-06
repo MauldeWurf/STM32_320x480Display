@@ -263,6 +263,7 @@ void testScreen_16(void){
 			tft_dc_low();
 }
 void displayReset(void){
+	//PA10
 	//reset pin aus und wieder an
 	GPIOA->ODR &=~ (1U<<10);
 	systick_msec_sleep(20); //50ms war stabil, 20ms geraten, aber funktioniert

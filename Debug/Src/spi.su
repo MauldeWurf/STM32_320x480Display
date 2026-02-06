@@ -1,8 +1,0 @@
-../Src/spi.c:11:6:spi_gpio_init	4	static
-../Src/spi.c:60:6:spi1_config	4	static
-../Src/spi.c:102:6:spi1_transmit	24	static
-../Src/spi.c:130:6:spi1_transmit16	24	static
-../Src/spi.c:160:6:spi1_receive	16	static
-../Src/spi.c:176:6:spi1_DMA_enable	4	static
-../Src/spi.c:180:6:spi1_set16	4	static
-../Src/spi.c:185:6:spi1_set8	4	static

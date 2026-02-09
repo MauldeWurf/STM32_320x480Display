@@ -45,5 +45,6 @@ PA9 - AF07 USART1_TX
 PA10 - AF07 USART1_RX
 
 DMA2 Stream2 ch4  USART1_RX (tabelle 28. DMA request mapping- RM0383 Rev4)
+DMA2 Stream7 ch4 USART1_TX
 
-06022026 - der DMA transfer geht noch nicht. die pins sind richtig testscreen geht. NDRT zählt nicht runter... 
+06022026 - der DMA transfer geht noch nicht. die pins sind richtig testscreen geht. NDRT zählt nicht runter...gelöst! Stream4 war falsch für TX ist es Stream5

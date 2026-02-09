@@ -11,7 +11,7 @@
 #define CR1_UE					(1U<<13)
 #define SR_TXE					(1U<<7)
 
-
+char pc_uart_data_buffer[PC_UART_DATA_BUFF_SIZE];
 static void uart_set_baudrate(uint32_t periph_clk,uint32_t baudrate);
 static void uart_write(int ch);
 

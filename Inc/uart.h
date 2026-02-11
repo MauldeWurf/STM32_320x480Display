@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h"
 
-#define PC_UART_DATA_BUFF_SIZE	5
+#define DEBUG_UART_DATA_BUFF_SIZE	5
 
 void uart_init(void);
 

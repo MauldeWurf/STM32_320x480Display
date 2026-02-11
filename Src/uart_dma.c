@@ -38,10 +38,13 @@
 #define HIFSR_TCIF5		(1U<<11)
 #define HIFSR_TCIF6		(1U<<21)
 
+#define LIFCR_CTCIF2	(1U<<21)
+
 static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
 static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
 
 char uart_data_buffer[UART_DATA_BUFF_SIZE];
+char uart_dma_input_buffer[UART_INPUT_BUFFER_SIZE];
 
 uint8_t g_rx_cmplt;
 uint8_t g_tx_cmplt;
@@ -51,7 +54,7 @@ uint8_t g_uart_cmplt;
 void uart1_rx_tx_init(void)
 {
 //	PA9...USART1_TX
-//	PA10...USART1_RX
+//
 	/*************Configure UART GPIO pin********************/
 	/*1.Enable clock access to GPIOA*/
 	RCC->AHB1ENR |= GPIOAEN;
@@ -127,7 +130,7 @@ void dma2_stream2_uart_rx_config(void)
 	DMA2->LIFCR |= (1U<<18);
 	DMA2->LIFCR |= (1U<<19);
 	DMA2->LIFCR |= (1U<<20);
-	DMA2->LIFCR |= (1U<<21);
+	DMA2->LIFCR |= LIFCR_CTCIF2;
 
 	/*Set periph address*/
 	DMA2_Stream2->PAR = (uint32_t)(&(USART1->DR));
@@ -233,14 +236,18 @@ void DMA2_Stream7_IRQHandler(void)
 
 void DMA2_Stream2_IRQHandler(void)
 {
-	if((DMA2->HISR) & HIFSR_TCIF5)
+//	receive data
+	if((DMA2->LISR) & LIFCR_CTCIF2)
 	{
-
+		/*set complete flag*/
 		g_rx_cmplt = 1;
-
+		/*add received data to inputBuffer*/
+		for (uint8_t i=0;i<UART_DATA_BUFF_SIZE;i++){
+			uart_dma_input_buffer[i]=uart_data_buffer[i];
+		}
 
 		/*Clear the flag*/
-		DMA1->HIFCR |= HIFCR_CTCIF5;
+		DMA2->LIFCR |= LIFCR_CTCIF2;
 	}
 }
 void USART1_IRQHandler(void)

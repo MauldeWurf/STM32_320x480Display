@@ -16,13 +16,13 @@ extern uint8_t g_rx_cmplt;
 extern uint8_t g_uart_cmplt;
 extern uint8_t g_tx_cmplt;
 
-extern char pc_uart_data_buffer[PC_UART_DATA_BUFF_SIZE];
+extern char pc_uart_data_buffer[DEBUG_UART_DATA_BUFF_SIZE];
+extern char uart_dma_input_buffer[UART_INPUT_BUFFER_SIZE];
 char msg_buff[150] ={'\0'};
 
 
 
 int main(void){
-	//sbc_lcd01_init();
 	four_inch_init();
 	testScreen_16();
 	debugSineCosine();
@@ -32,7 +32,7 @@ int main(void){
 	digitLCDInit(25,40,40,50,19,5);
 	dma2_init();
 	uart1_rx_tx_init();
-
+	dma2_stream2_uart_rx_config();
 	int16_t pos=0;
 	uart_init();
 	uint16_t number = 0;
@@ -42,8 +42,19 @@ int main(void){
 		systick_msec_sleep(50);
 		number++;
 		dma2_stream7_uart_tx_config((uint32_t)msg_buff,strlen(msg_buff));
-		sprintf(msg_buff,"number %d\n\r",number);
-		printf(msg_buff);
+		if(g_rx_cmplt){
+			uint8_t j=0;
+			for(uint8_t i=0;i<150;i++){
+				// look for end of msg_buff
+				if(msg_buff[i]!='\0' && i==j) j++;
+			}
+			for(uint8_t i=0;i<UART_INPUT_BUFFER_SIZE;i++){
+				msg_buff[i+j] = uart_dma_input_buffer[i];
+			}
+			g_rx_cmplt =0;
+			printf("%s\r\n",msg_buff);
+		}
+		//printf(msg_buff);
 		}
 
 }

@@ -46,7 +46,6 @@ static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
 static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
 
 char uart_data_buffer[UART_DATA_BUFF_SIZE];
-char uart_dma_transfer_buffer[UART_TRANSFER_BUFFER_SIZE];
 
 uint8_t g_rx_cmplt;
 uint8_t g_tx_cmplt;
@@ -279,11 +278,11 @@ void USART1_IRQHandler(void)
 		/*Wait till DMA Stream is disabled*/
 		while((DMA2_Stream2->CR & DMA_SCR_EN)){}
 
+		/*how many chars were received*/
 		uint16_t data_rec = UART_DATA_BUFF_SIZE - DMA2_Stream2->NDTR;
-		for(uint16_t i =0;i<data_rec;i++){
-			uart_dma_transfer_buffer[i] = uart_data_buffer[i];
-		}
-		uart_dma_transfer_buffer[data_rec]='\0';
+		/*mark end of new data in buffer*/
+		uart_data_buffer[data_rec]='\0';
+
 		/*DMA reset*/
 		DMA2_Stream2->NDTR = UART_DATA_BUFF_SIZE;
 		/*Clear interrupt flags for stream 2*/

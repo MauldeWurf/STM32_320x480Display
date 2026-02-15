@@ -17,10 +17,10 @@ extern uint8_t g_uart_cmplt;
 extern uint8_t g_tx_cmplt;
 extern uint8_t g_uart_idle;
 
-extern char pc_uart_data_buffer[DEBUG_UART_DATA_BUFF_SIZE];
-extern char uart_dma_transfer_buffer[UART_TRANSFER_BUFFER_SIZE];
-char msg_buff[UART_TRANSFER_BUFFER_SIZE] ={'\0'};
-char GPGSV[15]={'\0'};
+
+extern char uart_data_buffer[UART_DATA_BUFF_SIZE];
+char msg_buff[UART_DATA_BUFF_SIZE] ={'\0'};
+;
 
 
 
@@ -44,11 +44,11 @@ int main(void){
 		systick_msec_sleep(10);
 		number++;
 
-		if(g_uart_idle || g_tx_cmplt){
+		if(g_uart_idle){
 
-			for(uint16_t i=0;i<UART_TRANSFER_BUFFER_SIZE;i++){
-				msg_buff[i] = uart_dma_transfer_buffer[i];
-				if (uart_dma_transfer_buffer[i]=='\0') break;
+			for(uint16_t i=0;i<UART_DATA_BUFF_SIZE;i++){
+				msg_buff[i] = uart_data_buffer[i];
+				if (uart_data_buffer[i]=='\0') break;
 			}
 			g_rx_cmplt = 0;
 			g_uart_idle = 0;

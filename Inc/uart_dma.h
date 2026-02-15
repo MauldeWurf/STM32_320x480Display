@@ -4,7 +4,6 @@
 #include "stm32f4xx.h"
 
 #define UART_DATA_BUFF_SIZE		1024
-#define UART_TRANSFER_BUFFER_SIZE 1024
 
 void uart1_rx_tx_init(void);
 void dma2_init(void);
